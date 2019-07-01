@@ -1,0 +1,71 @@
+{
+	"name": "text-transformer",
+	"displayName": "Text Transformer",
+	"description": "Advanced text transformer",
+	"publisher": "johnycilohokla",
+	"version": "0.0.1",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/JohnyCilohokla/text-transformer.git"
+    },
+	"engines": {
+		"vscode": "^1.35.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"onCommand:transformer.inlineEval",
+		"onCommand:transformer.increment",
+		"onCommand:transformer.decrement"
+	],
+	"main": "./out/extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "transformer.inlineEval",
+				"title": "Transformer: Evaluate inline (as javascript)"
+			},
+			{
+				"command": "transformer.increment",
+				"title": "Transformer: Increment all selected numbers by 1"
+			},
+			{
+				"command": "transformer.decrement",
+				"title": "Transformer: Decrement all selected numbers by 1"
+			}
+		],
+		"keybindings": [
+			{
+				"command": "transformer.increment",
+				"key": "ctrl+alt+numpad_add",
+				"mac": "shift+cmd+numpad_add",
+				"when": "editorTextFocus"
+			},
+			{
+				"command": "transformer.decrement",
+				"key": "ctrl+alt+numpad_subtract",
+				"mac": "shift+cmd+numpad_subtract",
+				"when": "editorTextFocus"
+			},
+			{
+				"command": "transformer.inlineEval",
+				"key": "ctrl+alt+q e",
+				"mac": "shift+cmd+q e",
+				"when": "editorTextFocus"
+			}
+		]
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"postinstall": "node ./node_modules/vscode/bin/install"
+	},
+	"devDependencies": {
+		"typescript": "^3.3.1",
+		"vscode": "^1.1.28",
+		"tslint": "^5.12.1",
+		"@types/node": "^10.12.21"
+	}
+}
