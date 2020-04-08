@@ -3,11 +3,11 @@
 	"displayName": "Text Transformer",
 	"description": "Advanced text transformer",
 	"publisher": "johnycilohokla",
-	"version": "0.0.1",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/JohnyCilohokla/text-transformer.git"
-    },
+	"version": "0.0.2",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/JohnyCilohokla/text-transformer.git"
+	},
 	"engines": {
 		"vscode": "^1.35.0"
 	},
@@ -64,7 +64,7 @@
 	},
 	"devDependencies": {
 		"typescript": "^3.3.1",
-		"vscode": "^1.1.28",
+		"vscode": "^1.1.36",
 		"tslint": "^5.12.1",
 		"@types/node": "^10.12.21"
 	}
