@@ -9,7 +9,7 @@ All of the commands start with `Transformer:` to make them easier to find
 ## Features
 
 `Transformer: Evaluate selected as inline javascript (transformer.inlineEval)`
- * Transform all selected numeric lines, increasing the number by 1
+ * Transform all selected lines by evaluating them as javascript
  * Keybind: ctrl+alt+q e
 
 `Transformer: Increment all selected numbers by 1 (transformer.increment)`
