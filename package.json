@@ -3,28 +3,46 @@
 	"displayName": "Text Transformer",
 	"description": "Advanced text transformer",
 	"publisher": "johnycilohokla",
-	"version": "0.0.3",
+	"version": "0.1.0",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/JohnyCilohokla/text-transformer.git"
 	},
 	"engines": {
-		"vscode": "^1.56.0"
+		"vscode": "^1.68.1"
 	},
 	"categories": [
 		"Other"
 	],
 	"activationEvents": [
 		"onCommand:transformer.inlineEval",
+		"onCommand:transformer.reloadExecutor",
 		"onCommand:transformer.increment",
 		"onCommand:transformer.decrement"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
+		"configuration": {
+			"title": "Text Transformer",
+			"properties": {
+				"text-transformer.executor": {
+					"type": [
+						"string",
+						"null"
+					],
+					"default": null,
+					"description": "Specifies the path to js file to require when evaluating inline, check docs for more info."
+				}
+			}
+		},
 		"commands": [
 			{
 				"command": "transformer.inlineEval",
 				"title": "Transformer: Evaluate inline (as javascript)"
+			},
+			{
+				"command": "transformer.reloadExecutor",
+				"title": "Transformer: Reload executor"
 			},
 			{
 				"command": "transformer.increment",
@@ -62,10 +80,9 @@
 		"watch": "tsc -watch -p ./"
 	},
 	"devDependencies": {
-		"@types/node": "^15.0.2",
-		"@types/vscode": "^1.56.0",
-		"tslint": "^6.1.3",
-		"typescript": "^4.2.4",
-		"vscode-test": "^1.5.2"
+		"@types/node": "^18.0.0",
+		"@types/vscode": "^1.68.1",
+		"typescript": "^4.7.4",
+		"@vscode/test-electron": "^2.1.5"
 	}
 }

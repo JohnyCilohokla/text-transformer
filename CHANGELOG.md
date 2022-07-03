@@ -1,9 +1,9 @@
 # Change Log
 
-All notable changes to the "text-transformer" extension will be documented in this file.
+## [0.1.0]
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+- Major overhaul changes, implemented custom executor support
 
-## [Unreleased]
+## [0.0.3]
 
-- Initial release
+- Initial WIP release
