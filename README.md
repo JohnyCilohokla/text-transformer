@@ -7,6 +7,9 @@ All of the commands start with `Transformer:` to make them easier to find
 ## Features
 
 `Transformer: Evaluate selected as inline javascript (transformer.inlineEval)`
+ > ⚠ **This command will execute the text as javascript, this includes potentially dangerous code.** ⚠
+ >
+ > ⚠ **This can crash the extension, vscode, or worse, as it executes text as code** ⚠
 
 -  Transform all selected lines by evaluating them as javascript
 -  Keybind: ctrl+alt+q e
@@ -49,11 +52,11 @@ type Context = {
 	readonly i: number; // index of the replaced value, starting at 0
 	readonly index: number; // i + 1
 	readonly s: number; // selection index, starting at 0
-	readonly line: number; // starting line of the selection
-	readonly startLine: number; // starting line of the selection
-	readonly startCharacter: number; // starting character number of the selection
-	readonly endLine: number; // ending line of the selection
-	readonly endCharacter: number; // ending character number of the selection
+	readonly line: number; // starting line of the selection, start at 1
+	readonly startLine: number; // starting line of the selection, 0 based
+	readonly startCharacter: number; // starting character number of the selection, 0 based
+	readonly endLine: number; // ending line of the selection, 0 based
+	readonly endCharacter: number; // ending character number of the selection, 0 based
 };
 
 /** Process has to return either a Function, AsyncFunction or undefined */
@@ -96,7 +99,7 @@ Defining an exported augment function will allow you to augment the context.
 
 This function runs once when you execute the command instead of once per selection.
 
-Example of attaching a prototype to the context
+Example of attaching an instance of an object to the context
 
 ```js
 class Context {
@@ -106,7 +109,7 @@ class Context {
 }
 
 exports.augment = function augment(context) {
-	Object.setPrototypeOf(context, Context.prototype);
+	Object.setPrototypeOf(context, new Context());
 };
 
 exports.process = function process(text) {
@@ -123,6 +126,14 @@ This example defines a method called fromEntries, `$.fromEntries([["a","b"], ["c
 
 > ⚠ **This is a heavily experimental feature** ⚠
 
+Custom process function allows the return of AsyncFunction, this will allow the process function to become async and the
+await keyword will function.
+
+For async to work correctly the selection can't change while the async functions are executing, 
+the command will re-check to make sure all of the selections are still the same.
+
+AsyncFunction allow things like fetching an API or reading a file asynchronously.
+
 
 ```js
 class Context {
@@ -130,13 +141,9 @@ class Context {
 		return Object.fromEntries(array);
 	}
 
-	// basic "fetch" function (unfortunately VS code doesn't support fetch yet)
 	getJSON(url) {
-		console.log(url);
 		url = new URL(url);
 		let http = require(url.protocol === "https:" ? "https" : "http");
-		console.log(url);
-		console.log(url.protocol === "https:" ? "https" : "http");
 
 		return new Promise((resolve, reject) => {
 			let req = http.request(url, {
@@ -153,8 +160,6 @@ class Context {
 					response.on("data", chunk => { data += chunk; });
 					response.on("end", () => {
 						try {
-							console.log(data);
-							console.log(JSON.parse(data));
 							return resolve(JSON.parse(data));
 						} catch (err) { reject(err); }
 					});
@@ -187,3 +192,15 @@ exports.process = function process(text) {
 	return undefined;
 }
 ```
+
+Usage example of `getJSON`: 
+```js
+await getJSON("https://reqbin.com/echo/get/json") //-> {"success":"true"}
+```
+
+This setup also allow you to create a project locally with dependencies, it can even be a transpiled TypeScript project 
+using for example `ts-node` (`swc` is recommend to speed up the compile times but not required), it is also possible to
+compile the inlined code using TypeScript (again `swc` is recommended)
+
+> This feature is provided as early access, a comprehensive Custom Executor example is in the work and will be available
+> eventually, but if you have ideas on how you would like to extends the inline executor this will allow you do to so.
